@@ -1,0 +1,160 @@
+@startuml
+'https://plantuml.com/class-diagram
+title __PEANO's Class Diagram__\n
+namespace peano {
+    class peano.PeanoImagen {
+        {static} - logger : Logger
+        {static} + main()
+    }
+  }
+
+namespace peano {
+    namespace gui {
+      class peano.gui.PeanoFrame {
+          {static} - logger : Logger
+          + PeanoFrame()
+          - crearImagenYPeano()
+          - crearMenuOpciones()
+          - crearPanelComandos()
+      }
+    }
+  }
+
+
+  namespace peano {
+    namespace gui {
+      class peano.gui.PeanoPanel {
+          + PeanoPanel()
+          + getPreferredSize()
+          + propertyChange()
+          # paintComponent()
+      }
+    }
+  }
+
+  namespace peano {
+      namespace controladores {
+        class peano.controladores.ControlMarcador {
+            {static} - logger : Logger
+            + ControlMarcador()
+            + mouseDragged()
+            + mouseMoved()
+        }
+      }
+    }
+
+    namespace peano {
+        namespace objetos {
+          enum DireccionFigura {
+            ABAJO
+            ARRIBA
+            DERECHA
+            IZQUIERDA
+          }
+        }
+      }
+
+
+      namespace peano {
+        namespace objetos {
+          interface peano.objetos.IDibujador {
+              {abstract} + dibujar()
+          }
+        }
+      }
+
+
+      namespace peano {
+        namespace objetos {
+          class peano.objetos.Imagen {
+              {static} + EVENT_IMAGEN : String
+              - alto : int
+              - ancho : int
+              - observado : PropertyChangeSupport
+              - pixeles : int[][]
+              + Imagen()
+              + Imagen()
+              + addObserver()
+              + aplicarMatriz()
+              + copiar()
+              + copiar()
+              + dibujar()
+              + getAlto()
+              + getAncho()
+              + getPixeles()
+              + limpiar()
+              + punto()
+              + recortar()
+          }
+        }
+      }
+
+
+      namespace peano {
+        namespace objetos {
+          class peano.objetos.MatrizTransformacion {
+              {static} - df : DecimalFormat
+              - matriz : double[][]
+              + MatrizTransformacion()
+              + MatrizTransformacion()
+              + aplicarMatriz()
+              + componer()
+              + copiar()
+              + escala()
+              + get()
+              + rotacion()
+              + set()
+              + toString()
+              + traslacion()
+          }
+        }
+      }
+
+
+      namespace peano {
+        namespace objetos {
+          class peano.objetos.Peano {
+              {static} - direccionesArriba1 : HashMap<DireccionFigura, Vector2dConDireccion>
+              {static} - direccionesArriba2 : HashMap<DireccionFigura, Vector2dConDireccion>
+              {static} - direccionesDerecha : HashMap<DireccionFigura, Vector2dConDireccion>
+              {static} - direccionesIzquierda : HashMap<DireccionFigura, Vector2dConDireccion>
+              {static} - logger : Logger
+              + Peano()
+              + getResultado()
+              + hacerPeano()
+              - hacerPeano()
+          }
+        }
+      }
+
+
+      namespace peano {
+        namespace objetos {
+          class peano.objetos.Vector2dConDireccion {
+              - vector : double[]
+              + Vector2dConDireccion()
+              + Vector2dConDireccion()
+              + getDireccion()
+              + getVector()
+              + getX()
+              + getY()
+              + setDireccion()
+              + toString()
+          }
+        }
+      }
+
+peano.objetos.Imagen .up.|> peano.objetos.IDibujador
+peano.objetos.Peano o-- peano.objetos.Imagen : base
+peano.objetos.Peano o-- peano.objetos.Imagen : resultado
+peano.objetos.Vector2dConDireccion o-- peano.objetos.DireccionFigura : direccion
+
+peano.gui.PeanoFrame o-- peano.objetos.Peano : algoritmoPeano
+peano.gui.PeanoFrame o-- peano.objetos.Imagen : modelo
+peano.gui.PeanoPanel .up.|> java.beans.PropertyChangeListener
+peano.gui.PeanoPanel o-- peano.objetos.Imagen : modelo
+
+peano.controladores.ControlMarcador .up.|> java.awt.event.MouseMotionListener
+peano.controladores.ControlMarcador o-- peano.objetos.Imagen : modelo
+
+@enduml
